@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zubi Clothing – Hamarosan</title>
+
+  <!-- Italianno font -->
+  <link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
+
+  <style>
+    body, html {
+      margin: 0; padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Italianno', cursive;
+      transition: background-color 0.5s, color 0.5s;
+    }
+
+    body.dark-mode {
+      background-color: #0a0a0a;
+      color: #eee;
+    }
+
+    body.light-mode {
+      background-color: #fefefe;
+      color: #111;
+    }
+
+    .parallax {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .layer {
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background-repeat: repeat;
+      background-position: center;
+      will-change: transform;
+      opacity: 0.6;
+    }
+    .stars {
+      background: radial-gradient(white 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: 0.8;
+      z-index: 1;
+    }
+    .galaxy {
+      background: url('https://static.vecteezy.com/system/resources/previews/011/773/513/original/galaxy-dark-black-and-white-free-vector.jpg') no-repeat center center / cover;
+      opacity: 0.7;
+      z-index: 2;
+      filter: contrast(1.3) saturate(1.5) drop-shadow(0 0 5px #a9a9ff);
+    }
+    .nebula {
+      background: url('https://static.vecteezy.com/system/resources/previews/011/773/513/original/galaxy-dark-black-and-white-free-vector.jpg') no-repeat center center / cover;
+      opacity: 0.4;
+      z-index: 3;
+      filter: contrast(1.2) saturate(1.3) drop-shadow(0 0 8px #d1c4ff);
+    }
+
+    #eye-container {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 20;
+    }
+
+    .eye {
+      font-size: 2.5rem;
+      position: absolute;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease;
+      color: #eee;
+    }
+    .eye:hover {
+      transform: scale(1.5);
+    }
+
+    #main-content {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.7) translateY(100px);
+      opacity: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #eee;
+      text-align: center;
+      transition: transform 2s ease, opacity 2s ease;
+      z-index: 30;
+      max-width: 90vw;
+    }
+    #main-content.visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1) translateY(0);
+    }
+
+    h1 {
+      font-size: 5rem;
+      margin: 0 0 0.5rem 0;
+      text-shadow: 0 0 10px #fff;
+    }
+
+    p {
+      font-size: 2rem;
+      margin: 0.2rem 0;
+      text-shadow: 0 0 8px #ccc;
+      cursor: default;
+      user-select: none;
+      transition: text-shadow 0.5s ease;
+    }
+
+    p:hover {
+      text-shadow: 0 0 20px rgb(211, 211, 211), 0 0 30px #c5c5c5;
+    }
+
+    .scrolling-text {
+      position: absolute;
+      width: 100%;
+      bottom: 10px;
+      color: #bbb;
+      font-size: 1.2rem;
+      text-align: center;
+      animation: scrollText 20s linear infinite;
+      z-index: 25;
+      user-select: none;
+    }
+
+    @keyframes scrollText {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    #mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 40;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      color: #eee;
+      font-family: 'Italianno', cursive;
+      font-size: 1.2rem;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+    }
+
+    #mode-toggle:hover {
+      background: rgba(255,255,255,0.4);
+      color: #ff4081;
+    }
+
+    /* 3D Zubi Clothing logo */
+    #logo-3d {
+      font-size: 4rem;
+      font-weight: 900;
+      color: #7111a8;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 2rem;
+      text-shadow:
+        0 0 5px #7111a8,
+        0 0 10px #7111a8,
+        0 0 15px #7111a8;
+      transform-style: preserve-3d;
+      animation: spin3d 20s linear infinite;
+      cursor: default;
+      user-select: none;
+      line-height: 1.2;
+    }
+
+    @keyframes spin3d {
+      0% {
+        transform: rotateX(0deg) rotateY(0deg);
+      }
+      100% {
+        transform: rotateX(360deg) rotateY(360deg);
+      }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 3rem;
+      }
+      p {
+        font-size: 1.2rem;
+      }
+      #logo-3d {
+        font-size: 2.5rem;
+        letter-spacing: 0.1em;
+      }
+    }
+  </style>
+</head>
+<body class="dark-mode">
+
+  <div class="parallax">
+    <div class="layer stars"></div>
+    <div class="layer galaxy"></div>
+    <div class="layer nebula"></div>
+  </div>
+
+  <div id="eye-container"></div>
+
+  <div id="main-content">
+    <div id="logo-3d">Zubi Clothing</div>
+    <h1>Hamarosan...</h1>
+    <p>Zoom Out A Little</p>
+  </div>
+
+  <div class="scrolling-text">Zubi Clothing • Made In Pécs • Zoom Out A Little • Zubi Clothing • Made In Pécs • Zoom Out A Little • Zubi Clothing •</div>
+
+  <button id="mode-toggle" aria-label="Kapcsolás világos/sötét mód között">Világos mód</button>
+
+  <script>
+    const eyeContainer = document.getElementById('eye-container');
+    const mainContent = document.getElementById('main-content');
+    const scrollingText = document.querySelector('.scrolling-text');
+    const modeToggle = document.getElementById('mode-toggle');
+
+    let eyeCount = 16;
+    let removed = 0;
+
+    for (let i = 0; i < eyeCount; i++) {
+      const eye = document.createElement('div');
+      eye.textContent = '👀';
+      eye.className = 'eye';
+      eye.style.top = Math.random() * 90 + '%';
+      eye.style.left = Math.random() * 90 + '%';
+
+      eye.addEventListener('click', () => {
+        eye.remove();
+        removed++;
+        if (removed >= eyeCount) {
+          setTimeout(() => {
+            eyeContainer.style.display = 'none';
+            mainContent.classList.add('visible');
+            scrollingText.style.display = 'block';
+            scrollingText.style.opacity = '1';
+          }, 600);
+        }
+      });
+
+      eyeContainer.appendChild(eye);
+    }
+
+    scrollingText.style.display = 'none';
+
+    modeToggle.addEventListener('click', () => {
+      if (document.body.classList.contains('dark-mode')) {
+        document.body.classList.replace('dark-mode', 'light-mode');
+        modeToggle.textContent = 'Sötét mód';
+      } else {
+        document.body.classList.replace('light-mode', 'dark-mode');
+        modeToggle.textContent = 'Világos mód';
+      }
+    });
+
+    const layers = document.querySelectorAll('.layer');
+    window.addEventListener('mousemove', (e) => {
+      let x = e.clientX / window.innerWidth - 0.5;
+      let y = e.clientY / window.innerHeight - 0.5;
+      layers.forEach((layer, index) => {
+        let factor = (index + 1) * 10;
+        layer.style.transform = `translate3d(${x * factor}px, ${y * factor}px, 0)`;
+      });
+    });
+  </script>
+</body>
+</html>
